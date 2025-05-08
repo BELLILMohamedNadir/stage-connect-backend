@@ -1,0 +1,27 @@
+spring:
+  server:
+    address: 0.0.0.0
+    port: 8080
+  application:
+    name: stageconnect
+  datasource:
+    url: jdbc:postgresql://localhost:5432/stage_connect
+    username: root
+    password: StageConnect
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+app:
+  upload:
+    dir: src/main/resources/static/uploads
+  base-url: http://192.168.182.93:8080
+
