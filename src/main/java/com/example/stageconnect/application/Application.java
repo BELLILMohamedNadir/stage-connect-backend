@@ -31,9 +31,22 @@ public class Application {
     @Column(nullable = false)
     private Boolean verified;
 
+    private String coverLetter;
+
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private Status status;
+    private STATUS recruiterStatus;
+
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private STATUS establishmentStatus;
+
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private STATUS status;
+
+    @Column(nullable = false)
+    private String resumePath;
 
     @ManyToOne
     @JoinColumn(name = "student_id")

@@ -26,11 +26,10 @@ public class Project {
     private String role;
 
 
-    @Column(nullable = false, name = "start_date")
-    private String from;
+    @Column(nullable = false)
+    private String startDate;
 
-    @Column(name = "end_date")
-    private String to;
+    private String endDate;
 
     private boolean current;
 

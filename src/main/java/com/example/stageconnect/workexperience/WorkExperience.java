@@ -28,11 +28,10 @@ public class WorkExperience {
     @Column(nullable = false)
     private String company;
 
-    @Column(nullable = false, name = "start_date")
-    private LocalDate from;
+    @Column(nullable = false)
+    private LocalDate startDate;
 
-    @Column(name = "end_date")
-    private LocalDate to;
+    private LocalDate endDate;
 
     @Column(nullable = false)
     private boolean currentWorkHere;

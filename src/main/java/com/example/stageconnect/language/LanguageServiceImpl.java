@@ -1,7 +1,7 @@
 package com.example.stageconnect.language;
 
 import com.example.stageconnect.user.model.Student;
-import com.example.stageconnect.user.repository.UserRepository;
+import com.example.stageconnect.user.repository.StudentRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,11 +15,11 @@ public class LanguageServiceImpl implements LanguageService {
 
     private final LanguageRepository repository;
     private final LanguageMapper mapper;
-    private final UserRepository userRepository;
+    private final StudentRepository studentRepository;
 
     @Override
     public LanguageDto create(LanguageDto dto) {
-        Student user = (Student) userRepository.findById(dto.getUserId())
+        Student user = (Student) studentRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Language entity = mapper.mapTo(dto);

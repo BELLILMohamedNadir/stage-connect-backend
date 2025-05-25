@@ -1,9 +1,10 @@
 package com.example.stageconnect.education;
 
 import com.example.stageconnect.user.model.Student;
-import com.example.stageconnect.user.repository.UserRepository;
+import com.example.stageconnect.user.repository.StudentRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,19 +12,22 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class EducationServiceImpl implements EducationService {
 
     private final EducationRepository repository;
     private final EducationMapper mapper;
-    private final UserRepository userRepository;
+    private final StudentRepository studentRepository;
 
     @Override
     public EducationDto create(EducationDto dto) {
-        Student user = (Student) userRepository.findById(dto.getUserId())
+        Student user = studentRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Education entity = mapper.mapTo(dto);
         entity.setStudent(user);
+
+        log.info("Saving education: {}", entity);
 
         entity.setId(null);
 

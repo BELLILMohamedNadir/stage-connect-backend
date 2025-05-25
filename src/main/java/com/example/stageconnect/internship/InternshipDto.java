@@ -2,7 +2,6 @@ package com.example.stageconnect.internship;
 
 
 import com.couchbase.client.core.deps.com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,10 +28,10 @@ public class InternshipDto {
 
     @NotNull
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private String from;
+    private LocalDate startDate;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private String to;
+    private LocalDate endDate;
 
     private boolean current;
 

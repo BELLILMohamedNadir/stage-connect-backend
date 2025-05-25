@@ -1,6 +1,6 @@
 package com.example.stageconnect.user.service;
 
-import com.example.stageconnect.user.Role;
+import com.example.stageconnect.user.ROLE;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -8,19 +8,19 @@ import java.util.Map;
 @Service
 public class UserDispatcherService {
 
-    private final Map<Role, UserService> services;
+    private final Map<ROLE, UserService> services;
 
     public UserDispatcherService(StudentServiceImpl studentService,
                                  RecruiterServiceImpl recruiterService,
                                  EstablishmentServiceImpl establishmentService) {
         this.services = Map.of(
-                Role.STUDENT, studentService,
-                Role.RECRUITER, recruiterService,
-                Role.ESTABLISHMENT, establishmentService
+                ROLE.STUDENT, studentService,
+                ROLE.RECRUITER, recruiterService,
+                ROLE.ESTABLISHMENT, establishmentService
         );
     }
 
-    public UserService getService(Role role) {
+    public UserService getService(ROLE role) {
         return services.get(role);
     }
 }

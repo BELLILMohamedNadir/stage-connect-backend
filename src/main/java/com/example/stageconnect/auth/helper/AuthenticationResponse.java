@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,10 +22,10 @@ public class AuthenticationResponse {
     @NotNull
     private String name;
 
-    @NotNull
     private String firstName;
 
-    @NotNull
+    private LocalDate dateOfBirth;
+
     private String address;
 
     @NotNull
@@ -38,6 +41,10 @@ public class AuthenticationResponse {
     private String gender;
 
     private String photo;
+
+    private String resume;
+
+    private String currentPosition;
 
     @NotNull
     private String token;

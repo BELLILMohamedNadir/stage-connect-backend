@@ -1,7 +1,8 @@
 package com.example.stageconnect.user.model;
 
 import com.example.stageconnect.file.File;
-import com.example.stageconnect.user.Role;
+import com.example.stageconnect.messaging.message.Message;
+import com.example.stageconnect.user.ROLE;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
@@ -30,6 +31,8 @@ public abstract class BaseUser implements UserDetails {
     @Column(nullable = false)
     protected  String name;
 
+    private  String firstName;
+
     @Column(nullable = false, unique = true)
     @Email(message = "add a valid email")
     protected String email;
@@ -39,23 +42,27 @@ public abstract class BaseUser implements UserDetails {
 
     protected String address;
 
-    @Column(nullable = false, length = 10)
+    @Column(nullable = false, length = 15)
     protected String phone;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
-    protected Role role;
+    protected ROLE role;
 
     @Column(nullable = false)
     protected LocalDate dateOfBirth;
 
     protected  String photo;
 
-    @Lob
+    private  String currentPosition;
+
     protected  String summary;
 
     @OneToMany(mappedBy = "user")
     private List<File> files;
+
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
+    private List<Message> messages;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -2,14 +2,11 @@ package com.example.stageconnect.project;
 
 
 import com.couchbase.client.core.deps.com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -27,10 +24,10 @@ public class ProjectDto {
 
     @NotNull
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private String from;
+    private String startDate;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private String to;
+    private String endDate;
 
     private boolean current;
 

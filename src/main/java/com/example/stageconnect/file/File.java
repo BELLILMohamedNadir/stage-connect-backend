@@ -1,5 +1,6 @@
 package com.example.stageconnect.file;
 
+import com.example.stageconnect.application.Application;
 import com.example.stageconnect.user.model.BaseUser;
 import com.example.stageconnect.user.model.Student;
 import jakarta.persistence.*;
@@ -20,6 +21,8 @@ public class File {
     private Long id;
 
     private String path;
+
+    private Boolean current;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

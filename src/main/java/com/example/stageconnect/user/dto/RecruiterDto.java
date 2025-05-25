@@ -2,7 +2,7 @@ package com.example.stageconnect.user.dto;
 
 
 import com.couchbase.client.core.deps.com.fasterxml.jackson.annotation.JsonFormat;
-import com.example.stageconnect.user.Role;
+import com.example.stageconnect.user.ROLE;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
@@ -20,27 +20,28 @@ import java.time.LocalDate;
 @Builder
 public class RecruiterDto {
 
-    @NotNull
+    private Long id;
+
     private String name;
 
-    @NotNull
+    private String firstName;
+
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
 
-    @NotNull
     @Email(message = "add a valid email")
     private String email;
 
-    @NotNull
-    private String password;
-
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private Role role;
-
-    @NotNull
     private String phone;
 
     private String photo;
+
+    private String address;
+
+    private String summary;
+
+    private String currentPosition;
+
+    private String organizationName;
 
 }

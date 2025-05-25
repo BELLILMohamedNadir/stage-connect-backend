@@ -49,7 +49,8 @@ public class ApplicationConfig {
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration()
-                .setPropertyCondition(Conditions.isNotNull()); // ignore nulls
+                .setSkipNullEnabled(true)
+                .setPropertyCondition(Conditions.isNotNull());
         return modelMapper;
     }
 

@@ -1,7 +1,7 @@
 package com.example.stageconnect.certification;
 
 import com.example.stageconnect.user.model.Student;
-import com.example.stageconnect.user.repository.UserRepository;
+import com.example.stageconnect.user.repository.StudentRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,11 +15,11 @@ public class CertificationServiceImpl implements CertificationService {
 
     private final CertificationRepository repository;
     private final CertificationMapper mapper;
-    private final UserRepository userRepository;
+    private final StudentRepository studentRepository;
 
     @Override
     public CertificationDto create(CertificationDto dto) {
-        Student user = (Student) userRepository.findById(dto.getUserId())
+        Student user = studentRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Certification entity = mapper.mapTo(dto);

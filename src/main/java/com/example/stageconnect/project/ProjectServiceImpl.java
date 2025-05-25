@@ -1,7 +1,7 @@
 package com.example.stageconnect.project;
 
 import com.example.stageconnect.user.model.Student;
-import com.example.stageconnect.user.repository.UserRepository;
+import com.example.stageconnect.user.repository.StudentRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,11 +15,11 @@ public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository repository;
     private final ProjectMapper mapper;
-    private final UserRepository userRepository;
+    private final StudentRepository studentRepository;
 
     @Override
     public ProjectDto create(ProjectDto dto) {
-        Student user = (Student) userRepository.findById(dto.getUserId())
+        Student user = (Student) studentRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Project entity = mapper.mapTo(dto);

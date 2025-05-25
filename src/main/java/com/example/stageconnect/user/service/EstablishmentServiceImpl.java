@@ -2,10 +2,10 @@ package com.example.stageconnect.user.service;
 
 
 import com.example.stageconnect.user.dto.EstablishmentDto;
-import com.example.stageconnect.user.dto.StudentDto;
+import com.example.stageconnect.user.dto.EstablishmentsDto;
 import com.example.stageconnect.user.mapper.EstablishmentMapper;
 import com.example.stageconnect.user.model.Establishment;
-import com.example.stageconnect.user.repository.UserRepository;
+import com.example.stageconnect.user.repository.EstablishmentRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class EstablishmentServiceImpl implements UserService <EstablishmentDto> {
 
-    private final UserRepository repository;
+    private final EstablishmentRepository repository;
     private final EstablishmentMapper mapper;
 
 
@@ -34,8 +34,24 @@ public class EstablishmentServiceImpl implements UserService <EstablishmentDto> 
         return repository.findAll()
                 .stream()
                 .map(entity -> {
-                    if (entity instanceof Establishment) {
+                    if (entity != null) {
                         return mapper.mapFrom((Establishment) entity);
+                    } else {
+                        throw new EntityNotFoundException("Unknown user type");
+                    }
+                })
+                .collect(Collectors.toList());
+    }
+
+    public List<EstablishmentsDto> findAllEstablishments() {
+        return repository.findAll()
+                .stream()
+                .map(entity -> {
+                    if (entity != null) {
+                        return EstablishmentsDto.builder()
+                                .id(entity.getId())
+                                .name(entity.getName())
+                                .build();
                     } else {
                         throw new EntityNotFoundException("Unknown user type");
                     }

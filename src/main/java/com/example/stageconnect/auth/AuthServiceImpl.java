@@ -4,14 +4,19 @@ package com.example.stageconnect.auth;
 import com.example.stageconnect.auth.helper.AuthenticationRequest;
 import com.example.stageconnect.auth.helper.AuthenticationResponse;
 import com.example.stageconnect.config.JwtService;
+import com.example.stageconnect.file.File;
+import com.example.stageconnect.file.FileRepository;
 import com.example.stageconnect.file.FileService;
-import com.example.stageconnect.offer.Offer;
 import com.example.stageconnect.user.*;
 import com.example.stageconnect.user.model.BaseUser;
 import com.example.stageconnect.user.model.Establishment;
 import com.example.stageconnect.user.model.Recruiter;
 import com.example.stageconnect.user.model.Student;
+import com.example.stageconnect.user.repository.EstablishmentRepository;
+import com.example.stageconnect.user.repository.RecruiterRepository;
+import com.example.stageconnect.user.repository.StudentRepository;
 import com.example.stageconnect.user.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,18 +25,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
+    private final EstablishmentRepository establishmentRepository;
+    private final StudentRepository studentRepository;
+    private final RecruiterRepository recruiterRepository;
     private final UserRepository userRepository;
+    private final FileRepository fileRepository;
     private final FileService fileService;
     private final AuthMapper mapper;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
+    @Transactional
     public String register(AuthDto authDto, MultipartFile file) throws Exception  {
 
         String encodedPassword = passwordEncoder.encode(authDto.getPassword());
@@ -39,56 +50,75 @@ public class AuthServiceImpl implements AuthService {
 
         switch (authDto.getRole()) {
             case STUDENT:
-                Establishment establishment = (Establishment) userRepository.findById(authDto.getEstablishmentId())
+                Establishment establishment = establishmentRepository.findById(authDto.getEstablishmentId())
                         .orElseThrow(() -> new RuntimeException("Establishment not found"));
 
                 user = Student.builder()
                         .email(authDto.getEmail())
                         .password(encodedPassword)
-                        .role(Role.STUDENT)
+                        .role(ROLE.STUDENT)
                         .name(authDto.getName())
                         .firstName(authDto.getFirstName())
                         .phone(authDto.getPhone())
                         .gender(authDto.getGender())
                         .dateOfBirth(authDto.getDateOfBirth())
                         .establishment(establishment)
+                        .expertises(authDto.getExpertises())
                         .build();
-                userRepository.save((Student) user);
+
+                studentRepository.save((Student) user);
+                //update the user with the photo path
+                if (!file.isEmpty()) {
+                    String photoPath = fileService.saveFile(file, user.getId());
+                    if (photoPath != null) {
+                        user.setPhoto(photoPath);
+                        studentRepository.save((Student) user);
+                    }
+                }
                 break;
 
             case RECRUITER:
                 user = Recruiter.builder()
                         .email(authDto.getEmail())
                         .password(encodedPassword)
-                        .role(Role.RECRUITER)
+                        .role(ROLE.RECRUITER)
                         .name(authDto.getName())
                         .phone(authDto.getPhone())
                         .dateOfBirth(authDto.getDateOfBirth())
                         .build();
-                userRepository.save((Recruiter) user);
+
+                recruiterRepository.save((Recruiter) user);
+                //update the user with the photo path
+                if (!file.isEmpty()) {
+                    String photoPath = fileService.saveFile(file, user.getId());
+                    if (photoPath != null) {
+                        user.setPhoto(photoPath);
+                        recruiterRepository.save((Recruiter) user);
+                    }
+                }
                 break;
             case ESTABLISHMENT:
                 user = Establishment.builder()
                         .email(authDto.getEmail())
                         .password(encodedPassword)
-                        .role(Role.ESTABLISHMENT)
+                        .role(ROLE.ESTABLISHMENT)
                         .name(authDto.getName())
                         .phone(authDto.getPhone())
                         .dateOfBirth(authDto.getDateOfBirth())
                         .build();
-                userRepository.save((Establishment) user);
+
+                establishmentRepository.save((Establishment) user);
+                //update the user with the photo path
+                if (!file.isEmpty()) {
+                    String photoPath = fileService.saveFile(file, user.getId());
+                    if (photoPath != null) {
+                        user.setPhoto(photoPath);
+                        establishmentRepository.save((Establishment) user);
+                    }
+                }
                 break;
             default:
                 throw new IllegalArgumentException("Unknown role");
-        }
-
-        //update the user with the photo path
-        if (!file.isEmpty()) {
-            String photoPath = fileService.saveFile(file, user.getId());
-            if (photoPath != null) {
-                user.setPhoto(photoPath);
-                userRepository.save(user);
-            }
         }
 
         return "Registered successfully";
@@ -112,6 +142,8 @@ public class AuthServiceImpl implements AuthService {
         switch (baseUser.getRole()) {
             case STUDENT:
                 if (baseUser instanceof Student student) {
+                    String cv = fileRepository.findByUserIdAndCurrentAndPathEndingWith(baseUser.getId(), true, ".pdf").filter(file -> file.getPath().endsWith(".pdf")).map(File::getPath).orElse(null);
+
                     return AuthenticationResponse.builder()
                             .id(student.getId())
                             .firstName(student.getFirstName())
@@ -119,9 +151,12 @@ public class AuthServiceImpl implements AuthService {
                             .email(student.getEmail())
                             .role(student.getRole().name())
                             .phone(student.getPhone())
+                            .dateOfBirth(student.getDateOfBirth())
                             .address(student.getAddress())
                             .gender(student.getGender())
+                            .currentPosition(student.getCurrentPosition())
                             .photo(fileService.generateFileUrl(student.getPhoto()))
+                            .resume(cv)
                             .token(jwtToken)
                             .build();
                 }

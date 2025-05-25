@@ -30,11 +30,10 @@ public class Education {
     @Column(nullable = false)
     private String university;
 
-    @Column(nullable = false, name = "start_date")
-    private LocalDate from;
+    @Column(nullable = false)
+    private LocalDate startDate;
 
-    @Column(name = "end_date")
-    private LocalDate to;
+    private LocalDate endDate;
 
     private boolean graduated;
 

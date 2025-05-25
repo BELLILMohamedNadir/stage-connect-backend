@@ -28,10 +28,19 @@ public class OfferDto {
     private String position;
 
     @NotNull
+    private String website;
+
+    @NotNull
     private String location;
 
     @NotNull
-    private Long salary;
+    private Long salaryStart;
+
+    @NotNull
+    private Long salaryEnd;
+
+    @NotNull
+    private String salaryUnit;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate postedDate;
@@ -40,28 +49,42 @@ public class OfferDto {
     private List<String> options;
 
     @NotNull
-    private String jobDescription;
-
-    @NotNull
-    private List<String> requirementSkills;
-
-    @NotNull
-    private String education;
+    private String experience;
 
     @NotNull
     private List<String> keySkills;
 
     @NotNull
-    private String jobFunction;
+    private String requirementSkills;
 
     @NotNull
-    private String employmentType;
+    private String jobDescription;
+
+    private String companyDescription;
+
+    private String workType;
+
+    private List<String> jobLevels;
+
+    private List<String> employmentTypes;
 
     @NotNull
-    private String website;
+    private List<String> education;
+
+    @NotNull
+    private List<String> jobFunction;
+
 
     private Boolean isSaved;
 
+    private Boolean isApplied;
+
     @NotNull
     private Long recruiterId;
+
+    private String logo;
+
+    private String company;
+
+
 }

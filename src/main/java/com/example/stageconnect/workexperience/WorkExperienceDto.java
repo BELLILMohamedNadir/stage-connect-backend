@@ -26,11 +26,11 @@ public class WorkExperienceDto {
 
     @NotNull
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate from;
+    private LocalDate startDate;
 
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate to;
+    private LocalDate endDate;
 
     @NotNull
     private boolean currentWorkHere;

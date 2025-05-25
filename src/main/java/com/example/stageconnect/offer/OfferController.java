@@ -27,9 +27,21 @@ public class OfferController {
         return ResponseEntity.ok(experience);
     }
 
-    @GetMapping
-    public ResponseEntity<List<OfferDto>> readAll() {
-        List<OfferDto> experiences = offerService.findAll();
+    @GetMapping("/student/{id}")
+    public ResponseEntity<List<OfferDto>> readAll(@PathVariable Long id) {
+        List<OfferDto> experiences = offerService.findAll(id);
+        return ResponseEntity.ok(experiences);
+    }
+
+    @GetMapping("/recruiter/{id}")
+    public ResponseEntity<List<OfferDto>> readAllByRecruiter(@PathVariable Long id) {
+        List<OfferDto> experiences = offerService.findAllByCompany(id);
+        return ResponseEntity.ok(experiences);
+    }
+
+    @GetMapping("/student/saved/{id}")
+    public ResponseEntity<List<OfferDto>> findAllSavedOffer(@PathVariable Long id) {
+        List<OfferDto> experiences = offerService.findAllSavedOffer(id);
         return ResponseEntity.ok(experiences);
     }
 
@@ -43,5 +55,15 @@ public class OfferController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         offerService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/save/{offerId}/{studentId}")
+    public void saveOffer(@PathVariable("offerId") Long offerId, @PathVariable("studentId") Long studentId) {
+        offerService.saveOffer(offerId, studentId);
+    }
+
+    @PostMapping("/un-save/{offerId}/{studentId}")
+    public void unSaveOffer(@PathVariable("offerId") Long offerId, @PathVariable("studentId") Long studentId) {
+        offerService.unSaveOffer(offerId, studentId);
     }
 }

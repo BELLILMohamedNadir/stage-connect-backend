@@ -1,6 +1,5 @@
 package com.example.stageconnect.config;
 
-import com.example.stageconnect.auth.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

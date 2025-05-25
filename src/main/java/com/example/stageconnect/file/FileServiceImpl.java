@@ -4,9 +4,7 @@ import com.example.stageconnect.user.model.BaseUser;
 import com.example.stageconnect.user.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -20,6 +18,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -82,10 +82,33 @@ public class FileServiceImpl implements FileService {
             //save the file
             BaseUser user = userRepository.findById(userId)
                     .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+            //set all pdfs or images currently to false
+            List<String> imageExtensions = Arrays.asList(".jpg", ".jpeg", ".png");
+            if (fileName.endsWith(".pdf")) {
+                // Set all PDF files to 'false'
+                List<File> pdfFiles = fileRepository.findAllByUserAndPathEndingWith(user, ".pdf");
+                for (File pdf : pdfFiles) {
+                    pdf.setCurrent(false);
+                }
+                fileRepository.saveAll(pdfFiles);  // Save all updated PDF files
+            }
+            else if (imageExtensions.stream().anyMatch(fileName::endsWith)) {
+                // Set all images files to 'false'
+                for (String extension : imageExtensions) {
+                    List<File> imageFiles = fileRepository.findAllByUserAndPathEndingWith(user, extension);
+                    for (File image : imageFiles) {
+                        image.setCurrent(false);
+                    }
+                    fileRepository.saveAll(imageFiles);
+                }
+            }
+
             fileRepository.save(
                     File.builder()
                             .path(fileName)
                             .user(user)
+                            .current(true)
                             .build()
             );
 

@@ -2,12 +2,13 @@ package com.example.stageconnect.education;
 
 
 import com.couchbase.client.core.deps.com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -28,10 +29,10 @@ public class EducationDto {
 
     @NotNull
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private String from;
+    private LocalDate startDate;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private String to;
+    private LocalDate endDate;
 
     private boolean graduated;
 
