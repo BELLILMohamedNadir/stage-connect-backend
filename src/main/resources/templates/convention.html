@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Convention de stage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12pt;
+            line-height: 1.6;
+            margin: 2cm;
+        }
+        h1 {
+            text-align: center;
+            font-size: 14pt;
+            margin-bottom: 20pt;
+        }
+        .section {
+            margin-top: 15pt;
+            margin-bottom: 15pt;
+            page-break-inside: avoid;
+        }
+        .signature-section {
+            margin-top: 30pt;
+        }
+        ul {
+            margin-top: 5pt;
+            margin-bottom: 5pt;
+            padding-left: 15pt;
+        }
+    </style>
+</head>
+<body>
+<h1>CONVENTION DE STAGE</h1>
+
+<div class="section">
+    <strong>1. L'Établissement d'enseignement</strong><br/>
+    Raison sociale : <span th:text="${etablissement?.name ?: 'Non spécifié'}">Nom</span><br/>
+    Adresse : <span th:text="${etablissement?.address ?: 'Non spécifié'}">Adresse</span><br/>
+    Représenté par : <span th:text="${etablissement?.representative ?: 'Non spécifié'}">Représentant</span>
+</div>
+
+<div class="section">
+    <strong>2. L'Entreprise d'accueil</strong><br/>
+    Raison sociale : <span th:text="${entreprise?.name ?: 'Non spécifié'}">Nom entreprise</span><br/>
+    Adresse : <span th:text="${entreprise?.address ?: 'Non spécifié'}">Adresse</span><br/>
+    Représenté par : <span th:text="${entreprise?.representative ?: 'Non spécifié'}">Représentant</span>
+</div>
+
+<div class="section">
+    <strong>3. Le Stagiaire</strong><br/>
+    Nom et prénom : <span th:text="${etudiant?.name ?: 'Non spécifié'}">Nom étudiant</span><br/>
+    Date de naissance :
+    <span th:text="${etudiant != null and etudiant.birthDate != null} ? ${#temporals.format(etudiant.birthDate, 'dd/MM/yyyy')} : 'Non spécifié'">Date</span><br/>
+    Adresse : <span th:text="${etudiant?.address ?: 'Non spécifié'}">Adresse</span><br/>
+    Téléphone : <span th:text="${etudiant?.phone ?: 'Non spécifié'}">Téléphone</span><br/>
+    Email : <span th:text="${etudiant?.email ?: 'Non spécifié'}">Email</span><br/>
+    Formation : <span th:text="${etudiant?.program ?: 'Non spécifié'}">Formation</span><br/>
+    Année universitaire : <span th:text="${etudiant?.academicYear ?: 'Non spécifié'}">Année</span>
+</div>
+
+<div class="section">
+    <strong>4. Durée et période du stage</strong><br/>
+    Période : du
+    <span th:text="${internship != null and internship.startDate != null} ? ${#temporals.format(internship.startDate, 'dd/MM/yyyy')} : 'Non spécifié'">Début</span>
+    au
+    <span th:text="${internship != null and internship.endDate != null} ? ${#temporals.format(internship.endDate, 'dd/MM/yyyy')} : 'Non spécifié'">Fin</span><br/>
+</div>
+
+<div class="section">
+    <strong>5. Lieu du stage</strong><br/>
+    <span th:text="${offer?.location ?: 'Non spécifié'}">Lieu</span>
+</div>
+
+<div class="section">
+    <strong>6. Missions et activités confiées</strong><br/>
+    Poste : <span th:text="${offer?.position ?: 'Non spécifié'}">Poste</span><br/>
+
+    <div th:if="${jobDescriptionHtml != null}">
+        Missions principales :<br/>
+        <div th:utext="${jobDescriptionHtml}"></div>
+    </div>
+
+</div>
+
+<div class="section">
+    <strong>7. Gratification</strong><br/>
+    <div th:if="${internship != null and internship.paid}">
+        Le stage est gratifié à hauteur de
+        <span th:text="${offer?.salaryStart ?: 0}">0</span> à
+        <span th:text="${offer?.salaryEnd ?: 0}">0</span>
+        <span th:text="${offer?.salaryUnit ?: '€'}">€/mois</span>
+    </div>
+    <div th:unless="${internship != null and internship.paid}">
+        Le stage n'est pas gratifié.
+    </div>
+</div>
+
+<div class="section signature-section">
+    <strong>Fait en trois exemplaires originaux</strong><br/>
+    <p>Lu et approuvé,</p>
+
+    <div style="margin-top: 40pt;">
+        <strong>Le Stagiaire</strong><br/><br/>
+        Signature : _________________________<br/><br/>
+        Date : ____ / ____ / ________
+    </div>
+
+    <div style="margin-top: 40pt;">
+        <strong>L'Établissement</strong><br/><br/>
+        Signature : _________________________<br/><br/>
+        Date : ____ / ____ / ________
+    </div>
+
+    <div style="margin-top: 40pt;">
+        <strong>L'Entreprise</strong><br/><br/>
+        Signature : _________________________<br/>
+        Cachet de l'entreprise<br/><br/>
+        Date : ____ / ____ / ________
+    </div>
+</div>
+
+</body>
+</html>

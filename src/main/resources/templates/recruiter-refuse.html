@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Refus de stage - Entreprise</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12pt;
+            line-height: 1.6;
+            margin: 2cm;
+        }
+        h1 {
+            text-align: center;
+            font-size: 14pt;
+            margin-bottom: 20pt;
+            text-transform: uppercase;
+        }
+        .section {
+            margin-top: 20pt;
+            page-break-inside: avoid;
+        }
+        .signature {
+            margin-top: 50pt;
+        }
+    </style>
+</head>
+<body>
+
+<h1>REFUS DE DEMANDE DE STAGE</h1>
+
+<div class="section">
+    <p>
+        Nous, <strong th:text="${recruiter.name ?: 'Nom de l’entreprise'}"></strong>,
+        représenté(e) par <strong th:text="${recruiter.representative ?: 'Nom du recruteur'}"></strong>,
+        accusons réception de la demande de stage soumise par :
+    </p>
+
+    <ul>
+        <li><strong>Nom et prénom :</strong> <span th:text="${student.name ?: 'Non spécifié'}"></span></li>
+        <li><strong>Email :</strong> <span th:text="${student.email ?: 'Non spécifié'}"></span></li>
+        <li><strong>Formation :</strong> <span th:text="${student.program ?: 'Non spécifié'}"></span></li>
+        <li><strong>Année universitaire :</strong> <span th:text="${student.academicYear ?: 'Non spécifié'}"></span></li>
+    </ul>
+</div>
+
+<div class="section">
+    <p>
+        Après étude de votre candidature, nous regrettons de vous informer que celle-ci n’a pas été retenue
+        pour le poste suivant :
+    </p>
+
+    <ul>
+        <li><strong>Poste :</strong> <span th:text="${offer.position ?: 'Non spécifié'}"></span></li>
+        <li><strong>Lieu :</strong> <span th:text="${offer.location ?: 'Non spécifié'}"></span></li>
+    </ul>
+</div>
+
+<div class="section">
+    <p>
+        <strong>Motif du refus :</strong><br/>
+        <span th:if="${refuseReason != null}" th:text="${refuseReason}">Raison non spécifiée.</span>
+        <span th:unless="${refuseReason != null}">Raison non spécifiée.</span>
+    </p>
+</div>
+
+<div class="section">
+    <p>
+        Nous remercions le candidat pour l’intérêt porté à notre entreprise et lui souhaitons pleine réussite
+        dans sa recherche de stage.
+    </p>
+</div>
+
+<div class="section signature">
+    <p>
+        Fait à <span th:text="${recruiter.address ?: 'Adresse de l’entreprise'}"></span>, le
+        <span th:text="${#dates.format(#dates.createNow(), 'dd/MM/yyyy')}"></span>
+    </p>
+
+    <p>
+        Signature du recruteur :<br/><br/>
+        _________________________________
+    </p>
+</div>
+
+</body>
+</html>

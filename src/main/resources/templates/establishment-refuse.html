@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Refus de stage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12pt;
+            line-height: 1.6;
+            margin: 2cm;
+        }
+        h1 {
+            text-align: center;
+            font-size: 14pt;
+            margin-bottom: 20pt;
+            text-transform: uppercase;
+        }
+        .section {
+            margin-top: 20pt;
+            page-break-inside: avoid;
+        }
+        .signature {
+            margin-top: 50pt;
+        }
+    </style>
+</head>
+<body>
+
+<h1>REFUS DE CONVENTION DE STAGE</h1>
+
+<div class="section">
+    <p>
+        Nous soussignés, <strong th:text="${establishment.name ?: 'Nom de l’établissement'}"></strong>,
+        représenté par <strong th:text="${establishment.representative ?: 'Nom du responsable'}"></strong>,
+        confirmons par la présente notre décision de <strong>refuser la demande de convention de stage</strong>
+        soumise par l’étudiant suivant :
+    </p>
+
+    <ul>
+        <li><strong>Nom et prénom :</strong> <span th:text="${student.name ?: 'Non spécifié'}"></span></li>
+        <li><strong>Date de naissance :</strong> <span th:text="${student.birthDate != null ? #temporals.format(student.birthDate, 'dd/MM/yyyy') : 'Non spécifié'}"></span></li>
+        <li><strong>Formation :</strong> <span th:text="${student.program ?: 'Non spécifié'}"></span></li>
+        <li><strong>Année universitaire :</strong> <span th:text="${student.academicYear ?: 'Non spécifié'}"></span></li>
+    </ul>
+</div>
+
+<div class="section">
+    <p>
+        Cette décision a été prise pour les raisons suivantes :
+    </p>
+    <p th:if="${refuseReason != null}" th:text="${refuseReason}">Raison non spécifiée.</p>
+    <p th:unless="${refuseReason != null}">Raison non spécifiée.</p>
+</div>
+
+<div class="section">
+    <p>
+        Nous restons à disposition de l’étudiant pour toute demande complémentaire ou pour envisager d’autres solutions
+        d’encadrement ou de stage dans le futur.
+    </p>
+</div>
+
+<div class="section signature">
+    <p>
+        Fait à <span th:text="${establishment.address ?: 'Adresse de l’établissement'}"></span>, le
+        <span th:text="${#dates.format(#dates.createNow(), 'dd/MM/yyyy')}"></span>
+    </p>
+
+    <p>
+        Signature du responsable de l’établissement :<br/><br/>
+        _________________________________
+    </p>
+</div>
+
+</body>
+</html>
