@@ -30,4 +30,4 @@ spring:
 app:
   upload:
     dir: src/main/resources/static/uploads
-  base-url: http://10.246.11.74:8080
+  base-url: http://IP_ADDESS:8080
